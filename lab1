@@ -1,0 +1,61 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+/* Сортировка выбором */
+void selection_sort(int arr[], int size) {
+  // ...
+}
+
+/* Сортировка вставками */
+void insertion_sort(int arr[], int size) {
+  // ...
+}
+
+void generate_random_array(int arr[], int size) {
+  int i;
+  for (i = 0; i < size; i++) {
+    arr[i] = rand() % (1000 - 100 + 1) + 100;
+  }
+}
+
+int main(int argc, char *argv[]) {
+  int array_sizes[] = {100, 200, 500, 1000};
+  int test_num, method, i;
+  int *arr;
+
+  if (argc < 2) {
+    printf("Забыли указать метод сортировки! Выбери:\n1 - Сортировка выбором\n2 - Сортировка вставками\n");
+    return -1;
+  }
+
+  method = atoi(argv[1]);
+  if (method != 1 && method != 2) {
+    printf("Неправильный выбор метода! Выбери:\n1 - Сортировка выбором\n2 - Сортировка вставками\n");
+    return -1;
+  }
+
+  srand(time(NULL));
+
+  for (test_num = 0; test_num < 4; test_num++) {
+    int size = array_sizes[test_num];
+    arr = (int *)malloc(size * sizeof(int));
+
+    generate_random_array(arr, size);
+
+    if (method == 1) {
+      selection_sort(arr, size);
+    } else {
+      insertion_sort(arr, size);
+    }
+
+    printf("Отсортированный массив с %d числами:\n", size);
+    for (i = 0; i < size; i++) {
+      printf("%d ", arr[i]);
+    }
+    printf("\n");
+    free(arr);
+  }
+
+  return 0;
+}

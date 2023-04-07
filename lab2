@@ -1,0 +1,147 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct node {
+  int data;
+  struct node *next;
+}Node;
+
+Node *head = NULL;
+
+/* Функция добавления элемента в конец списка */
+void add_end(int value) {
+  Node *temp, *current;
+
+  temp = (Node *)malloc(sizeof(Node));
+  temp->data = value;
+  temp->next = NULL;
+
+  if (head == NULL) {
+    head = temp;
+  } else {
+    current = head;
+    while (current->next != NULL) {
+      current = current->next;
+    }
+    current->next = temp;
+  }
+}
+
+/* Удаление элемента с конца списка */
+void delete_end() {
+  Node *fast_ptr, *slow_ptr;
+
+  if (head == NULL) {
+    printf("Список пуст!\n");
+  } else if (head->next == NULL) {
+    head = NULL;
+    free(head);
+  } else {
+    fast_ptr = head;
+    slow_ptr = head;
+    while (fast_ptr->next != NULL) {
+      fast_ptr = fast_ptr->next;
+      slow_ptr = (fast_ptr->next == NULL) ? slow_ptr : slow_ptr->next;
+    }
+    slow_ptr->next = NULL;
+    free(fast_ptr);
+  }
+}
+
+/* Просмотреть односвязный список */
+void display() {
+  Node *temp;
+
+  if (head == NULL) {
+    printf("Список пуст!\n");
+    return;
+  }
+  temp = head;
+  printf("Односвязный список: ");
+  while (temp != NULL) {
+    printf("%d ", temp->data);
+    temp = temp->next;
+  }
+  printf("\n");
+}
+
+/* Удалить весь односвязный список */
+void delete_list() {
+  Node *current, *nextNode;
+
+  current = head;
+  while (current != NULL) {
+    nextNode = current->next;
+    free(current);
+    current = nextNode;
+  }
+  head = NULL;
+}
+
+/* Поиск заданного элемента в односвязном списке */
+void search(int element) {
+  Node *current = head;
+  int position = 1;
+
+  while (current != NULL) {
+    if (current->data == element) {
+      printf("Элемент найден на позиции %d\n", position);
+      return;
+    }
+
+    current = current->next;
+    position++;
+  }
+  printf("Элемент не найден!\n");
+}
+
+int main() {
+  int option, value;
+
+  do {
+    printf("\nВыбери действие:\n");
+    printf("1 - Добавить элемент\n");
+    printf("2 - Удалить элемент\n");
+    printf("3 - Просмотреть список\n");
+    printf("4 - Удалить весь список\n");
+    printf("5 - Найти элемент\n");
+    printf("6 - Выйти\n");
+
+    scanf("%d", &option);
+    
+    switch(option) {
+      case 1:
+        printf("Введите значение: ");
+        scanf("%d", &value);
+        add_end(value);
+        break;
+
+      case 2:
+        delete_end();
+        break;
+
+      case 3:
+        display();
+        break;
+
+      case 4:
+        delete_list();
+        break;
+
+      case 5:
+        printf("Введите элемент для поиска: ");
+        scanf("%d", &value);
+        search(value);
+        break;
+
+      case 6:
+        printf("Пока-пока\n");
+        break;
+
+      default:
+        printf("Выбери один из предложенных вариант\n");
+    }
+  } while(option != 6);
+
+  return 0;
+}
